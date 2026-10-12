@@ -17,17 +17,17 @@
         const worker=this.worker;
         await new Promise((resolve,reject)=>{
           this.rejectLoading=reject;this.loadTimer=setTimeout(()=>reject(Error('model-timeout')),45000);
-          worker.onerror=()=>reject(Error('model-failed'));
-          worker.onmessage=({data})=>{if(data.type==='ready'){clearTimeout(this.loadTimer);this.rejectLoading=null;resolve();}else if(data.type==='error')reject(Error(data.message));};
+          worker.onerror=(event)=>{console.error('[TIBA+ hand gesture] Ralat Worker semasa memuatkan model:',event.message||'Worker gagal dimuatkan',event.filename||'',event.lineno||'');reject(Error('Worker: '+(event.message||'gagal memuatkan modul')));};
+          worker.onmessage=({data})=>{if(data.type==='ready'){clearTimeout(this.loadTimer);this.rejectLoading=null;resolve();}else if(data.type==='error'){console.error('[TIBA+ hand gesture] Ralat MediaPipe:',data.message);reject(Error('MediaPipe: '+data.message));}};
           worker.postMessage({type:'init'});
         });
         if(generation!==this.generation)return;
         this.ready=true;this.detected=false;this.busy=false;this.lastInference=0;this.lastFrameAt=performance.now();this.lostSince=performance.now();this.lossAnnounced=false;
-        worker.onerror=()=>this.fail('Model tidak dapat berjalan. Gunakan tetikus untuk meneruskan.');
-        worker.onmessage=({data})=>{this.busy=false;this.lastFrameAt=performance.now();if(data.type==='result')this.accept(data);else if(data.type==='error')this.fail('Pengesan tangan terhenti. Gunakan tetikus untuk meneruskan.');};
+        worker.onerror=(event)=>{console.error('[TIBA+ hand gesture] Worker berhenti:',event.message||'Ralat tidak diketahui');this.fail('Model tidak dapat berjalan. Semak tab Console. Gunakan tetikus untuk meneruskan.');};
+        worker.onmessage=({data})=>{this.busy=false;this.lastFrameAt=performance.now();if(data.type==='result')this.accept(data);else if(data.type==='error'){console.error('[TIBA+ hand gesture] Ralat semasa mengesan tangan:',data.message);this.fail('Pengesan tangan terhenti: '+String(data.message||'tidak diketahui').slice(0,140)+'. Gunakan tetikus untuk meneruskan.');}};
         stream.getVideoTracks().forEach(track=>track.addEventListener('ended',()=>{if(generation===this.generation)this.fail('Kamera terputus. Aktifkan semula atau pilih tetikus.');}));
         this.status('searching','Tangan belum dikesan');this.loop();
-      }catch(error){if(generation!==this.generation)return;const denied=['NotAllowedError','PermissionDeniedError','SecurityError'].includes(error.name);const missing=['NotFoundError','DevicesNotFoundError','NotReadableError'].includes(error.name);this.fail(denied?'Izin kamera tidak diberikan. Kamu boleh bermain dengan tetikus.':missing?'Kamera tidak tersedia atau sedang digunakan. Teruskan dengan tetikus.':'Model tangan tidak dapat dimuatkan. Teruskan dengan tetikus; tiada jawapan dikira salah.');}
+      }catch(error){if(generation!==this.generation)return;const denied=['NotAllowedError','PermissionDeniedError','SecurityError'].includes(error.name);const missing=['NotFoundError','DevicesNotFoundError','NotReadableError'].includes(error.name);console.error('[TIBA+ hand gesture] Punca sebenar gagal aktifkan kamera/model:',error);const detail=String(error?.message||error||'ralat tidak diketahui').replace(/[\r\n]+/g,' ').slice(0,180);this.fail(denied?'Izin kamera tidak diberikan. Kamu boleh bermain dengan tetikus.':missing?'Kamera tidak tersedia atau sedang digunakan. Teruskan dengan tetikus.':`Model tangan tidak dapat dimuatkan (${detail}). Semak Console; teruskan dengan tetikus.`);}
     }
     accept(data){
       const handedness=data.handedness?.[0]?.[0]?.categoryName?.toLowerCase(),wanted=this.settings().hand;

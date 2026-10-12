@@ -1,0 +1,13 @@
+TIBA+ meN- — Kemas kini diagnostik ralat hand gesture
+
+1. Ekstrak ZIP ini.
+2. Buka repository https://github.com/Nabilah03-ctrl/escape-room
+3. Pilih Add file > Upload files.
+4. Muat naik fail tracking.js SAHAJA (jangan masukkan fail ini dalam subfolder).
+5. Klik Commit changes untuk menggantikan tracking.js di akar repository.
+6. Tunggu GitHub Pages deploy, buka https://nabilah03-ctrl.github.io/escape-room/ dan tekan Ctrl+Shift+R.
+7. Buka DevTools (F12), tab Console, tekan Aktifkan kamera semula.
+8. Hantar screenshot ralat merah di Console dan mesej yang tertera pada permainan.
+
+Nota: Kemas kini ini menambah diagnostik. Ia TIDAK menjamin punca asal sudah dibaiki.
+Fungsi soalan/markah, bilik, dan kawalan mouse tidak diubah.
