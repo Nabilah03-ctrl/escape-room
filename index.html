@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="ms-MY">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#245e91">
+  <meta name="description" content="Bantu MIM memulihkan Istana Kata. Enam bilik, 24 cabaran imbuhan meN-, kawalan tangan dan tetikus untuk Bahasa Melayu Tahun 2.">
+  <title>TIBA+ meN- | Misi Selamatkan Bahasa</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <script src="data.js" defer></script>
+  <script src="engine.js" defer></script>
+  <script src="art.js" defer></script>
+  <script src="scenes.js" defer></script>
+  <script src="input.js" defer></script>
+  <script src="tracking.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Terus ke kandungan</a>
+  <div id="app"></div>
+  <div id="modal-root"></div>
+  <aside id="camera-preview" class="camera-preview" aria-label="Pratonton kamera bercermin" hidden><span>Kamera aktif · diproses pada peranti</span></aside>
+  <aside id="hand-dock" class="hand-dock" aria-label="Kawalan tangan" hidden>
+    <span id="hand-dock-status" role="status">Kamera dimatikan</span>
+    <button type="button" data-action="scroll-up" aria-label="Tatal ke atas">↑ Atas</button>
+    <button type="button" data-action="scroll-down" aria-label="Tatal ke bawah">↓ Bawah</button>
+    <button type="button" data-action="camera-off">Matikan kamera</button>
+  </aside>
+  <div id="notice" class="toast" role="status" aria-live="polite" hidden></div>
+  <noscript>Aktifkan JavaScript untuk bermain TIBA+ meN-. Semua rekod pembelajaran disimpan pada peranti anda.</noscript>
+</body>
+</html>
